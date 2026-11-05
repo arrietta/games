@@ -612,11 +612,15 @@ $('#fs').onclick = () => {
 
 // share pages under g/<slug>/ bake the slug into <html data-game>
 const slug = new URLSearchParams(location.search).get('g') || document.documentElement.dataset.game || '';
-if (!/^[\w-]+$/.test(slug)) {
+// standalone files (canva/<slug>.html) carry the game inline
+const inline = document.getElementById('game-data');
+const load = () => inline
+  ? Promise.resolve(JSON.parse(inline.textContent))
+  : fetch(`games/${slug}.json`).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+if (!inline && !/^[\w-]+$/.test(slug)) {
   $('#title').textContent = 'Игра не найдена';
 } else {
-  fetch(`games/${slug}.json`)
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  load()
     .then(d => {
       if (!GAMES[d.type]) throw new Error('unknown type ' + d.type);
       data = d;

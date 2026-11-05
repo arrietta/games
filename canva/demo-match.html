@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Animals: English — Русский</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap');
+
+:root {
+  --bg: #eef3ff;
+  --bg2: #dfe8ff;
+  --card: #ffffff;
+  --ink: #1d2340;
+  --muted: #69708f;
+  --accent: #5b5bf0;
+  --ok: #22b573;
+  --bad: #ef4a5a;
+  --c1: #ff6b6b; --c2: #4c9eff; --c3: #ffb52e; --c4: #2ec4a6;
+  --c5: #a66cff; --c6: #ff8fc7; --c7: #6bd36b; --c8: #ff8a3d;
+  --radius: 18px;
+  --shadow: 0 4px 0 rgba(29, 35, 64, .12), 0 8px 24px rgba(29, 35, 64, .08);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 800;
+  color: var(--ink);
+  background: radial-gradient(circle at 20% 0%, var(--bg2), var(--bg) 60%);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: 0; }
+
+#app { display: flex; flex-direction: column; min-height: 100%; }
+
+/* top bar */
+.bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px;
+  background: var(--card);
+  box-shadow: 0 2px 0 rgba(29, 35, 64, .08);
+  position: relative;
+}
+.bar h1 { font-size: clamp(16px, 2.6vw, 22px); margin: 0; flex: 1; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stats { display: flex; gap: 8px; align-items: center; }
+.pill { background: var(--bg); padding: 6px 12px; border-radius: 99px; font-size: 15px; white-space: nowrap; }
+.pill:empty { display: none; }
+.icon-btn { background: var(--bg); width: 36px; height: 36px; border-radius: 50%; font-size: 17px; display: grid; place-items: center; }
+.progress { position: absolute; left: 0; bottom: -4px; height: 4px; background: var(--accent); transition: width .3s; border-radius: 0 4px 4px 0; }
+
+#stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 16px; gap: 18px; }
+
+/* generic */
+.card {
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 22px; width: min(760px, 100%); text-align: center;
+}
+.big-q { font-size: clamp(22px, 4.2vw, 36px); line-height: 1.2; }
+.muted { color: var(--muted); font-weight: 600; }
+.btn {
+  background: var(--accent); color: #fff; padding: 14px 28px; border-radius: 14px;
+  font-size: 20px; box-shadow: 0 4px 0 rgba(0, 0, 0, .18); transition: transform .08s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0, 0, 0, .18); }
+.btn.ghost { background: var(--card); color: var(--ink); }
+.btn.ok { background: var(--ok); }
+.btn.bad { background: var(--bad); }
+.row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.media { max-width: 100%; max-height: 28vh; border-radius: 12px; display: block; margin: 0 auto; }
+.emoji { font-size: 1.6em; }
+
+.shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+.pop { animation: pop .3s; }
+@keyframes pop { 50% { transform: scale(1.08); } }
+
+/* intro / finish */
+.intro .type { display: inline-block; background: var(--bg); padding: 6px 14px; border-radius: 99px; color: var(--accent); margin-bottom: 10px; }
+.intro h2 { font-size: clamp(26px, 5vw, 42px); margin: 6px 0 10px; }
+.stars { font-size: 56px; letter-spacing: 6px; }
+.stars .off { filter: grayscale(1); opacity: .3; }
+
+/* quiz */
+.options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: min(760px, 100%); }
+.opt {
+  padding: 18px 14px; border-radius: 14px; color: #fff; font-size: clamp(17px, 2.8vw, 24px);
+  box-shadow: 0 5px 0 rgba(0, 0, 0, .18); text-align: left; display: flex; gap: 12px; align-items: center;
+  transition: transform .08s, opacity .2s;
+}
+.opt .key { background: rgba(255, 255, 255, .28); border-radius: 8px; min-width: 32px; height: 32px; display: grid; place-items: center; font-size: 16px; }
+.opt:nth-child(4n+1) { background: var(--c1); }
+.opt:nth-child(4n+2) { background: var(--c2); }
+.opt:nth-child(4n+3) { background: var(--c3); }
+.opt:nth-child(4n+4) { background: var(--c4); }
+.opt:active { transform: translateY(3px); }
+.opt.dim { opacity: .35; }
+.opt.right { background: var(--ok) !important; opacity: 1; }
+.opt.wrong { background: var(--bad) !important; opacity: 1; }
+.options.tf .opt { justify-content: center; font-size: clamp(22px, 4vw, 32px); padding: 26px; }
+.options.tf .opt:nth-child(1) { background: var(--c4); }
+.options.tf .opt:nth-child(2) { background: var(--c1); }
+@media (max-width: 520px) { .options:not(.tf) { grid-template-columns: 1fr; } }
+
+/* match */
+.match { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; width: min(820px, 100%); }
+.match .col { display: flex; flex-direction: column; gap: 10px; }
+.tile {
+  background: var(--card); border-radius: 14px; padding: 14px; min-height: 58px;
+  box-shadow: var(--shadow); font-size: clamp(16px, 2.5vw, 22px);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  border: 3px solid transparent; transition: transform .1s, opacity .3s, background .2s;
+}
+.tile.sel { border-color: var(--accent); transform: scale(1.03); }
+.tile.done { background: var(--ok); color: #fff; opacity: .55; pointer-events: none; }
+.tile img { max-height: 70px; max-width: 100%; border-radius: 8px; }
+
+/* flashcards */
+.flip { perspective: 1200px; width: min(560px, 100%); height: min(340px, 48vh); cursor: pointer; }
+.flip-inner { position: relative; width: 100%; height: 100%; transition: transform .5s; transform-style: preserve-3d; }
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+.face {
+  position: absolute; inset: 0; backface-visibility: hidden; border-radius: 22px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 10px;
+  font-size: clamp(24px, 5vw, 44px); text-align: center; background: var(--card);
+}
+.face.back { transform: rotateY(180deg); background: var(--accent); color: #fff; }
+.face .hint { font-size: 15px; position: absolute; bottom: 14px; opacity: .6; }
+.face img { max-height: 70%; max-width: 100%; border-radius: 12px; }
+
+/* anagram */
+.slots, .letters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.slot, .letter {
+  width: clamp(40px, 8vw, 58px); height: clamp(48px, 9vw, 66px); border-radius: 12px;
+  display: grid; place-items: center; font-size: clamp(22px, 4.5vw, 34px);
+}
+.slot { background: rgba(91, 91, 240, .1); border: 3px dashed rgba(91, 91, 240, .4); }
+.slot.filled { background: var(--card); border: 3px solid var(--accent); box-shadow: var(--shadow); }
+.slots.right .slot { background: var(--ok); border-color: var(--ok); color: #fff; }
+.letter { background: var(--c3); color: #fff; box-shadow: 0 4px 0 rgba(0, 0, 0, .18); }
+.letter.used { visibility: hidden; }
+
+/* group sort */
+.zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; width: min(980px, 100%); }
+.zone { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; min-height: 140px; border: 3px solid transparent; transition: border-color .15s; }
+.zone.hover { border-color: var(--accent); }
+.zone-title { font-size: clamp(14px, 2.2vw, 20px); overflow-wrap: anywhere; hyphens: auto; padding: 6px 10px; border-radius: 10px; color: #fff; margin-bottom: 10px; text-align: center; }
+.zone-items { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; width: min(980px, 100%); min-height: 60px; }
+.chip {
+  background: var(--card); border-radius: 12px; padding: 10px 16px; box-shadow: var(--shadow);
+  font-size: clamp(16px, 2.4vw, 21px); touch-action: none; border: 3px solid transparent; position: relative;
+}
+.chip.sel { border-color: var(--accent); }
+.chip.dragging { z-index: 10; box-shadow: 0 12px 30px rgba(0, 0, 0, .2); }
+.chip.done { background: var(--ok); color: #fff; box-shadow: none; padding: 6px 12px; font-size: 16px; pointer-events: none; }
+.chip img { max-height: 60px; display: block; border-radius: 8px; }
+
+/* wheel */
+.wheel-wrap { position: relative; width: min(440px, 88vw, 60vh); aspect-ratio: 1; }
+.wheel-wrap canvas { width: 100%; height: 100%; display: block; }
+.wheel-pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0;
+  border-left: 18px solid transparent; border-right: 18px solid transparent; border-top: 34px solid var(--ink); filter: drop-shadow(0 2px 2px rgba(0,0,0,.3)); }
+.wheel-result { font-size: clamp(24px, 5vw, 40px); min-height: 1.3em; text-align: center; }
+label.check { display: flex; gap: 8px; align-items: center; font-weight: 600; color: var(--muted); cursor: pointer; }
+
+.catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; width: min(980px, 100%); }
+.catalog a { text-decoration: none; color: inherit; }
+.catalog .card { text-align: left; height: 100%; transition: transform .1s; }
+.catalog .card:hover { transform: translateY(-3px); }
+
+/* ---------- themes: "theme" in game JSON ---------- */
+.stickers { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.stickers span { position: absolute; opacity: .3; animation: float 6s ease-in-out infinite alternate; }
+.stickers img { width: 100%; }
+@keyframes float { to { transform: translateY(-14px) rotate(8deg); } }
+#app { position: relative; z-index: 1; }
+
+[data-theme="space"] {
+  --bg: #0f1033; --bg2: #2a1f6b; --card: #1d1f52; --ink: #f2f3ff; --muted: #a9abd8; --accent: #8b6bff;
+  --shadow: 0 4px 0 rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .3);
+}
+[data-theme="space"] .stickers span { opacity: .45; }
+[data-theme="forest"] {
+  --bg: #e9f6e3; --bg2: #c8e8b6; --accent: #3f9b4f; --ink: #1f3a24; --muted: #5c7a60;
+  --c1: #e4704a; --c2: #4e9ac9; --c3: #e8b23a; --c4: #5aa65f;
+}
+[data-theme="ocean"] {
+  --bg: #e2f4fb; --bg2: #a9dcf0; --accent: #1f8fc4; --ink: #12324a; --muted: #4f7590;
+  --c1: #ff7a6b; --c2: #2f80ed; --c3: #ffc145; --c4: #19b3a6;
+}
+[data-theme="candy"] {
+  --bg: #fff0f7; --bg2: #ffd3e8; --accent: #ff5fa2; --ink: #4a1d3a; --muted: #9a6585;
+  --c1: #ff6fa5; --c2: #8f7bff; --c3: #ffb84d; --c4: #3ccfb4;
+}
+[data-theme="school"] {
+  --bg: #fdf8ec; --bg2: #f6e9c4; --accent: #e0553a; --ink: #2d2a24; --muted: #7d7462;
+  --card: #fffdf6;
+}
+[data-theme="school"] body {
+  background-color: var(--bg);
+  background-image: linear-gradient(rgba(70, 120, 200, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(70, 120, 200, .08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+[data-theme="winter"] {
+  --bg: #eef6ff; --bg2: #cfe4ff; --accent: #3b7ddd; --ink: #15294a; --muted: #5e7597;
+  --c1: #e85d75; --c2: #3b7ddd; --c3: #7cc4ff; --c4: #49b3a3;
+}
+
+/* whack-a-mole */
+.holes { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(8px, 2vw, 20px); width: min(640px, 100%, 78vh); }
+.hole { position: relative; aspect-ratio: 1 / 1; }
+.hole .pit { position: absolute; left: 6%; right: 6%; bottom: 4%; height: 26%; border-radius: 50%; background: radial-gradient(ellipse at 50% 35%, #3b2a1f 0 55%, #6b4a33 70%); }
+.hole .mole-box { position: absolute; left: 0; right: 0; top: -12%; bottom: 17%; overflow: hidden; border-radius: 0 0 40% 40%; }
+.mole {
+  position: absolute; left: 12%; right: 12%; bottom: 0; transform: translateY(105%);
+  transition: transform .18s ease-out; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+  touch-action: manipulation;
+}
+.mole.up { transform: translateY(0); }
+.mole svg { width: 100%; display: block; filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .25)); }
+.mole .sign {
+  background: #fff; color: #1d2340; border: 3px solid #8a6240; border-radius: 10px; padding: 2px 10px;
+  font-size: clamp(15px, 3.4vw, 26px); margin-bottom: -4%; position: relative; z-index: 1; white-space: nowrap;
+}
+.mole.hit svg { animation: squash .35s forwards; }
+.mole.hit::after { content: '💫'; position: absolute; top: 30%; font-size: clamp(22px, 5vw, 40px); }
+.mole.good .sign { background: var(--ok); color: #fff; border-color: var(--ok); }
+.mole.oops .sign { background: var(--bad); color: #fff; border-color: var(--bad); }
+@keyframes squash { to { transform: scaleY(.75) translateY(14%); } }
+.whack-rule { font-size: clamp(18px, 3vw, 24px); }
+.hammer { position: fixed; pointer-events: none; font-size: 44px; z-index: 20; animation: hammer .25s forwards; }
+@keyframes hammer { from { transform: translate(-30%, -70%) rotate(-50deg); } to { transform: translate(-30%, -70%) rotate(10deg); opacity: .2; } }
+
+</style>
+</head>
+<body>
+  <div id="app">
+    <header class="bar">
+      <h1 id="title">Загрузка…</h1>
+      <div class="stats">
+        <span class="pill" id="score"></span>
+        <span class="pill" id="timer"></span>
+        <button class="icon-btn" id="mute" title="Звук">🔊</button>
+        <button class="icon-btn" id="fs" title="Во весь экран">⛶</button>
+      </div>
+      <div class="progress" id="progress" style="width:0"></div>
+    </header>
+    <main id="stage"></main>
+  </div>
+  <script type="application/json" id="game-data">{"type": "match", "title": "Animals: English — Русский", "theme": "forest", "items": [{"a": "🐱 cat", "b": "кошка"}, {"a": "🐶 dog", "b": "собака"}, {"a": "🐮 cow", "b": "корова"}, {"a": "🐸 frog", "b": "лягушка"}, {"a": "🐻 bear", "b": "медведь"}, {"a": "🦊 fox", "b": "лиса"}]}</script>
+<script>
+'use strict';
+
+// ---------- helpers ----------
+const $ = (s, r = document) => r.querySelector(s);
+
+function el(tag, props = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === 'class') e.className = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+
+const shuffle = a => {
+  a = [...a];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.random() * (i + 1) | 0;
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const isImg = s => typeof s === 'string' && (/^img:/.test(s) || /^https?:\/\/\S+\.(png|jpe?g|gif|svg|webp)(\?.*)?$/i.test(s));
+
+// Text or picture: "img:pics/cat.png" or a direct image URL becomes <img>
+function content(s) {
+  if (isImg(s)) return el('img', { src: s.replace(/^img:/, ''), alt: '', draggable: 'false' });
+  return el('span', {}, String(s));
+}
+
+function flash(node, cls) {
+  node.classList.remove(cls);
+  void node.offsetWidth;
+  node.classList.add(cls);
+}
+
+// ---------- sound ----------
+let ac, muted = false;
+function tone(freqs, dur = 0.12, type = 'sine', vol = 0.15) {
+  if (muted) return;
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    freqs.forEach((f, i) => {
+      const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime + i * dur;
+      o.type = type;
+      o.frequency.value = f;
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      o.connect(g).connect(ac.destination);
+      o.start(t);
+      o.stop(t + dur);
+    });
+  } catch { /* no audio */ }
+}
+const sfx = {
+  ok: () => tone([660, 880]),
+  bad: () => tone([220, 160], 0.15, 'triangle', 0.25),
+  win: () => tone([523, 659, 784, 1047], 0.14),
+  tick: () => tone([900], 0.03, 'square', 0.04),
+};
+
+// ---------- shell ----------
+const TYPE_NAMES = {
+  quiz: 'Викторина', truefalse: 'Правда или ложь', match: 'Найди пару',
+  flashcards: 'Карточки', anagram: 'Анаграмма', groupsort: 'Сортировка по группам', wheel: 'Колесо фортуны', whack: 'Бей крота',
+};
+const TYPE_HELP = {
+  quiz: 'Выбери правильный ответ.',
+  truefalse: 'Реши, верно утверждение или нет.',
+  match: 'Нажми на слово слева, затем на его пару справа.',
+  flashcards: 'Нажми на карточку, чтобы перевернуть. Отметь, знал ли ты ответ.',
+  anagram: 'Собери слово из перемешанных букв.',
+  groupsort: 'Перетащи (или нажми и выбери группу) каждый элемент в нужную группу.',
+  wheel: 'Крути колесо!',
+  whack: 'Бей крота, у которого неправильный ответ! Правильных не трогай.',
+};
+
+const stage = $('#stage');
+let data, t0, timerId;
+
+const G = {
+  stage,
+  score(text) { $('#score').textContent = text ?? ''; },
+  progress(i, n) { $('#progress').style.width = n ? (100 * i / n) + '%' : '0'; },
+  startTimer() {
+    t0 = Date.now();
+    clearInterval(timerId);
+    const tick = () => {
+      const s = Math.floor((Date.now() - t0) / 1000);
+      $('#timer').textContent = '⏱ ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    };
+    tick();
+    timerId = setInterval(tick, 500);
+  },
+  stopTimer() { clearInterval(timerId); },
+  finish(ok, total, note) {
+    G.stopTimer();
+    G.progress(1, 1);
+    const ratio = total ? ok / total : 1;
+    const stars = ratio >= 0.9 ? 3 : ratio >= 0.6 ? 2 : ratio > 0 ? 1 : 0;
+    if (stars >= 2) sfx.win();
+    stage.replaceChildren(el('div', { class: 'card intro pop' },
+      el('div', { class: 'stars' }, [1, 2, 3].map(n => el('span', { class: n <= stars ? '' : 'off' }, '⭐'))),
+      el('h2', {}, ['Попробуй ещё!', 'Неплохо!', 'Хорошо!', 'Отлично!'][stars]),
+      el('p', { class: 'big-q' }, `${ok} из ${total}`),
+      el('p', { class: 'muted' }, ($('#timer').textContent || '') + (note ? ' · ' + note : '')),
+      el('div', { class: 'row' }, el('button', { class: 'btn', onclick: intro }, '↻ Ещё раз')),
+    ));
+  },
+};
+
+function intro() {
+  G.stopTimer();
+  G.score('');
+  G.progress(0, 0);
+  $('#timer').textContent = '';
+  stage.replaceChildren(el('div', { class: 'card intro pop' },
+    el('div', { class: 'type' }, TYPE_NAMES[data.type] || data.type),
+    el('h2', {}, data.title),
+    el('p', { class: 'muted' }, data.instructions || TYPE_HELP[data.type] || ''),
+    el('button', { class: 'btn', onclick: play }, '▶ Начать'),
+  ));
+}
+
+function play() {
+  stage.replaceChildren();
+  if (data.type !== 'wheel') G.startTimer();
+  GAMES[data.type](data, G);
+}
+
+// ---------- games ----------
+const GAMES = {};
+
+// items: [{ q, a, wrong: [...], img? }]
+GAMES.quiz = (d, g, tf = false) => {
+  const qs = d.shuffle === false ? d.items : shuffle(d.items);
+  let i = 0, ok = 0;
+  const show = () => {
+    g.progress(i, qs.length);
+    g.score(`✔ ${ok}`);
+    if (i >= qs.length) return g.finish(ok, qs.length);
+    const it = qs[i];
+    const opts = tf ? ['Верно', 'Неверно'] : shuffle([it.a, ...it.wrong]);
+    const right = tf ? (it.a ? 'Верно' : 'Неверно') : it.a;
+    const box = el('div', { class: 'options' + (tf ? ' tf' : '') });
+    opts.forEach((o, k) => {
+      const b = el('button', { class: 'opt' },
+        tf ? null : el('span', { class: 'key' }, String(k + 1)), content(tf ? (o === 'Верно' ? '✔ Верно' : '✘ Неверно') : o));
+      b.onclick = async () => {
+        box.querySelectorAll('.opt').forEach(x => { x.disabled = true; x.classList.add('dim'); });
+        const good = o === right;
+        b.classList.add(good ? 'right' : 'wrong');
+        box.children[opts.indexOf(right)].classList.add('right');
+        good ? (ok++, sfx.ok()) : sfx.bad();
+        g.score(`✔ ${ok}`);
+        await wait(good ? 800 : 1500);
+        i++;
+        show();
+      };
+      box.append(b);
+    });
+    stage.replaceChildren(
+      el('div', { class: 'card pop' },
+        el('div', { class: 'muted' }, `Вопрос ${i + 1} из ${qs.length}`),
+        it.img ? el('img', { class: 'media', src: it.img, alt: '' }) : null,
+        el('div', { class: 'big-q' }, tf ? it.s : it.q)),
+      box);
+  };
+  show();
+};
+
+// items: [{ s: "утверждение", a: true|false }]
+GAMES.truefalse = (d, g) => GAMES.quiz(d, g, true);
+
+// items: [{ a, b }]
+GAMES.match = (d, g) => {
+  const pairs = d.items.map((p, id) => ({ ...p, id }));
+  let sel = null, found = 0, mistakes = 0;
+  const L = el('div', { class: 'col' }), R = el('div', { class: 'col' });
+  const mk = (p, side) => {
+    const t = el('button', { class: 'tile' }, content(p[side]));
+    t.pid = p.id;
+    t.side = side;
+    t.onclick = () => {
+      if (!sel || sel.side === side) {
+        sel?.classList.remove('sel');
+        sel = sel === t ? null : t;
+        sel?.classList.add('sel');
+        return;
+      }
+      if (sel.pid === t.pid) {
+        [sel, t].forEach(x => { x.classList.remove('sel'); x.classList.add('done'); flash(x, 'pop'); });
+        sfx.ok();
+        found++;
+        g.progress(found, pairs.length);
+        g.score(`${found} / ${pairs.length}`);
+        if (found === pairs.length) setTimeout(() => g.finish(Math.max(pairs.length - mistakes, 0), pairs.length, `ошибок: ${mistakes}`), 700);
+      } else {
+        mistakes++;
+        sfx.bad();
+        flash(t, 'shake');
+        flash(sel, 'shake');
+        sel.classList.remove('sel');
+      }
+      sel = null;
+    };
+    return t;
+  };
+  shuffle(pairs).forEach(p => L.append(mk(p, 'a')));
+  shuffle(pairs).forEach(p => R.append(mk(p, 'b')));
+  g.score(`0 / ${pairs.length}`);
+  stage.append(el('div', { class: 'match' }, L, R));
+};
+
+// items: [{ front, back }]
+GAMES.flashcards = (d, g) => {
+  const cards = d.shuffle === false ? d.items : shuffle(d.items);
+  let i = 0, know = 0;
+  const show = () => {
+    g.progress(i, cards.length);
+    g.score(`👍 ${know}`);
+    if (i >= cards.length) return g.finish(know, cards.length, 'карточек знал');
+    const c = cards[i];
+    const answer = el('div', { class: 'row', style: 'visibility:hidden' },
+      el('button', { class: 'btn bad', onclick: () => { i++; show(); } }, '✘ Не знал'),
+      el('button', { class: 'btn ok', onclick: () => { know++; sfx.ok(); i++; show(); } }, '✔ Знал'));
+    const card = el('div', { class: 'flip pop' },
+      el('div', { class: 'flip-inner' },
+        el('div', { class: 'face' }, content(c.front), el('div', { class: 'hint' }, 'нажми, чтобы перевернуть')),
+        el('div', { class: 'face back' }, content(c.back))));
+    card.onclick = () => { card.classList.toggle('flipped'); answer.style.visibility = 'visible'; };
+    stage.replaceChildren(el('div', { class: 'muted' }, `Карточка ${i + 1} из ${cards.length}`), card, answer);
+  };
+  show();
+};
+
+// items: [{ word, hint? }]
+GAMES.anagram = (d, g) => {
+  const words = d.shuffle === false ? d.items : shuffle(d.items);
+  let i = 0, ok = 0;
+  const show = () => {
+    g.progress(i, words.length);
+    g.score(`✔ ${ok}`);
+    if (i >= words.length) return g.finish(ok, words.length);
+    const it = words[i];
+    const target = [...it.word.toUpperCase().replace(/\s+/g, '')];
+    let mixed = shuffle(target);
+    for (let k = 0; k < 10 && mixed.join('') === target.join('') && target.length > 1; k++) mixed = shuffle(target);
+    let firstTry = true, done = false;
+    const slots = el('div', { class: 'slots' });
+    const letters = el('div', { class: 'letters' });
+    const slotEls = target.map(() => el('button', { class: 'slot' }));
+    slotEls.forEach(s => {
+      s.onclick = () => {
+        if (!s.tile || done) return;
+        s.tile.classList.remove('used');
+        s.tile = null;
+        s.textContent = '';
+        s.classList.remove('filled');
+      };
+      slots.append(s);
+    });
+    const check = async () => {
+      if (slotEls.some(s => !s.tile)) return;
+      if (slotEls.map(s => s.textContent).join('') === target.join('')) {
+        done = true;
+        slots.classList.add('right');
+        sfx.ok();
+        if (firstTry) ok++;
+        g.score(`✔ ${ok}`);
+        await wait(900);
+        i++;
+        show();
+      } else {
+        firstTry = false;
+        sfx.bad();
+        flash(slots, 'shake');
+        await wait(500);
+        slotEls.forEach(s => s.click());
+      }
+    };
+    mixed.forEach(ch => {
+      const t = el('button', { class: 'letter' }, ch);
+      t.onclick = () => {
+        const s = slotEls.find(x => !x.tile);
+        if (!s || done) return;
+        s.tile = t;
+        s.textContent = ch;
+        s.classList.add('filled');
+        t.classList.add('used');
+        check();
+      };
+      letters.append(t);
+    });
+    const skip = el('button', { class: 'btn ghost', onclick: async () => {
+      if (done) return;
+      done = true;
+      slotEls.forEach((s, k) => { s.textContent = target[k]; s.classList.add('filled'); });
+      letters.querySelectorAll('.letter').forEach(t => t.classList.add('used'));
+      await wait(1400);
+      i++;
+      show();
+    } }, 'Показать ответ');
+    stage.replaceChildren(
+      el('div', { class: 'card pop' },
+        el('div', { class: 'muted' }, `Слово ${i + 1} из ${words.length}`),
+        it.img ? el('img', { class: 'media', src: it.img, alt: '' }) : null,
+        it.hint ? el('div', { class: 'big-q' }, it.hint) : null),
+      slots, letters, skip);
+  };
+  show();
+};
+
+// groups: [{ name, items: [...] }]
+GAMES.groupsort = (d, g) => {
+  const colors = ['--c2', '--c1', '--c4', '--c5', '--c3', '--c8'];
+  const items = shuffle(d.groups.flatMap((gr, gi) => gr.items.map(t => ({ t, gi }))));
+  let left = items.length, mistakes = 0, sel = null;
+  const zones = d.groups.map((gr, gi) => {
+    const z = el('div', { class: 'zone' },
+      el('div', { class: 'zone-title', style: `background:var(${colors[gi % colors.length]})` }, gr.name),
+      el('div', { class: 'zone-items' }));
+    z.gi = gi;
+    z.onclick = () => sel && place(sel, z);
+    return z;
+  });
+  const pool = el('div', { class: 'pool' });
+  const place = (chip, z) => {
+    chip.classList.remove('sel');
+    sel = null;
+    if (z.gi === chip.it.gi) {
+      chip.classList.add('done');
+      $('.zone-items', z).append(chip);
+      flash(z, 'pop');
+      sfx.ok();
+      left--;
+      g.progress(items.length - left, items.length);
+      g.score(`${items.length - left} / ${items.length}`);
+      if (!left) setTimeout(() => g.finish(Math.max(items.length - mistakes, 0), items.length, `ошибок: ${mistakes}`), 600);
+    } else {
+      mistakes++;
+      sfx.bad();
+      flash(chip, 'shake');
+    }
+  };
+  items.forEach(it => {
+    const chip = el('div', { class: 'chip' }, content(it.t));
+    chip.it = it;
+    draggable(chip, z => place(chip, z), () => {
+      sel?.classList.remove('sel');
+      sel = sel === chip ? null : chip;
+      sel?.classList.add('sel');
+    });
+    pool.append(chip);
+  });
+  g.score(`0 / ${items.length}`);
+  stage.append(el('div', { class: 'zones' }, zones), pool);
+};
+
+// Pointer drag with tap fallback; onDrop gets the .zone under the pointer
+function draggable(node, onDrop, onTap) {
+  node.addEventListener('pointerdown', e => {
+    if (node.classList.contains('done')) return;
+    const sx = e.clientX, sy = e.clientY;
+    let dragging = false, over = null;
+    node.setPointerCapture(e.pointerId);
+    const zoneAt = ev => {
+      node.style.visibility = 'hidden';
+      const z = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.zone');
+      node.style.visibility = '';
+      return z;
+    };
+    const move = ev => {
+      const dx = ev.clientX - sx, dy = ev.clientY - sy;
+      if (!dragging && Math.hypot(dx, dy) > 6) { dragging = true; node.classList.add('dragging'); }
+      if (!dragging) return;
+      node.style.transform = `translate(${dx}px,${dy}px) rotate(3deg)`;
+      const z = zoneAt(ev);
+      if (z !== over) { over?.classList.remove('hover'); over = z; over?.classList.add('hover'); }
+    };
+    const up = ev => {
+      node.removeEventListener('pointermove', move);
+      node.removeEventListener('pointerup', up);
+      node.removeEventListener('pointercancel', up);
+      over?.classList.remove('hover');
+      node.classList.remove('dragging');
+      node.style.transform = '';
+      if (!dragging) return onTap();
+      const z = ev.type === 'pointerup' && zoneAt(ev);
+      if (z) onDrop(z);
+    };
+    node.addEventListener('pointermove', move);
+    node.addEventListener('pointerup', up);
+    node.addEventListener('pointercancel', up);
+  });
+}
+
+// items: ["...", "..."]
+GAMES.wheel = d => {
+  const palette = ['--c1', '--c2', '--c3', '--c4', '--c5', '--c6', '--c7', '--c8']
+    .map(v => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+  let items = [...d.items], rot = 0, spinning = false;
+  const canvas = el('canvas');
+  const result = el('div', { class: 'wheel-result' });
+  const removeBox = el('input', { type: 'checkbox' });
+  const ctx = canvas.getContext('2d');
+  const seg = () => 2 * Math.PI / items.length;
+
+  const draw = () => {
+    const size = canvas.clientWidth * devicePixelRatio;
+    canvas.width = canvas.height = size;
+    const r = size / 2;
+    ctx.clearRect(0, 0, size, size);
+    items.forEach((t, k) => {
+      const a0 = rot + k * seg() - Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(r, r);
+      ctx.arc(r, r, r - 4, a0, a0 + seg());
+      ctx.fillStyle = palette[k % palette.length] || '#888';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 3 * devicePixelRatio;
+      ctx.stroke();
+      ctx.save();
+      ctx.translate(r, r);
+      ctx.rotate(a0 + seg() / 2);
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      // shrink the font, then truncate, so the label stays outside the hub
+      const maxW = r * 0.7;
+      let px = Math.min(28, 160 / items.length + 10), label = String(t);
+      const setFont = () => { ctx.font = `800 ${px * devicePixelRatio}px Nunito, sans-serif`; };
+      setFont();
+      while (px > 13 && ctx.measureText(label).width > maxW) { px--; setFont(); }
+      while (label.length > 1 && ctx.measureText(label).width > maxW) label = label.slice(0, -2) + '…';
+      ctx.fillText(label, r - 18 * devicePixelRatio, 0);
+      ctx.restore();
+    });
+    ctx.beginPath();
+    ctx.arc(r, r, r * 0.09, 0, 2 * Math.PI);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+  };
+  const current = () => {
+    const a = ((-rot) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+    return Math.floor(a / seg()) % items.length;
+  };
+
+  const spin = () => {
+    if (spinning || !items.length) return;
+    spinning = true;
+    result.textContent = '';
+    const from = rot, delta = 2 * Math.PI * (5 + Math.random() * 3), dur = 4200, start = performance.now();
+    let last = current();
+    const frame = now => {
+      const p = Math.min((now - start) / dur, 1);
+      rot = from + delta * (1 - Math.pow(1 - p, 4));
+      draw();
+      const c = current();
+      if (c !== last) { sfx.tick(); last = c; }
+      if (p < 1) return requestAnimationFrame(frame);
+      spinning = false;
+      const k = current();
+      result.textContent = '🎉 ' + items[k];
+      flash(result, 'pop');
+      sfx.win();
+      if (removeBox.checked) setTimeout(() => { items.splice(k, 1); draw(); }, 1500);
+    };
+    requestAnimationFrame(frame);
+  };
+
+  canvas.onclick = spin;
+  stage.append(
+    el('div', { class: 'wheel-wrap' }, canvas, el('div', { class: 'wheel-pointer' })),
+    result,
+    el('div', { class: 'row' },
+      el('button', { class: 'btn', onclick: spin }, '🎡 Крутить'),
+      el('button', { class: 'btn ghost', onclick: () => { items = [...d.items]; result.textContent = ''; draw(); } }, '↻ Сбросить')),
+    el('label', { class: 'check' }, removeBox, 'Убирать выпавшие'));
+  requestAnimationFrame(draw);
+  addEventListener('resize', draw);
+};
+
+// Two modes:
+//   colors: [{ name, hex }] — sign shows a colour word, the mole is painted; hit when they don't match
+//   items: [{ text, ok }]   — sign shows text; hit the ones with ok:false
+// Hit "wrong" ones by default; "hit": "right" flips it. "time" in seconds (default 45).
+GAMES.whack = (d, g) => {
+  const hitWrong = d.hit !== 'right';
+  const time = (d.time || 45) * 1000;
+  const moleSvg = color => `<svg viewBox="0 0 100 92">
+    <ellipse cx="50" cy="62" rx="40" ry="44" fill="${color}" stroke="rgba(0,0,0,.35)" stroke-width="2.5"/>
+    <ellipse cx="50" cy="74" rx="24" ry="22" fill="#fff" opacity=".22"/>
+    <circle cx="36" cy="44" r="8" fill="#fff" stroke="rgba(0,0,0,.3)"/><circle cx="64" cy="44" r="8" fill="#fff" stroke="rgba(0,0,0,.3)"/>
+    <circle cx="37" cy="45" r="4" fill="#222"/><circle cx="63" cy="45" r="4" fill="#222"/>
+    <ellipse cx="50" cy="58" rx="8" ry="6" fill="#ff7aa8" stroke="rgba(0,0,0,.3)"/>
+    <rect x="45" y="65" width="10" height="7" rx="1.5" fill="#fff" stroke="rgba(0,0,0,.3)"/>
+    <ellipse cx="24" cy="82" rx="9" ry="6" fill="#ffb3c8" stroke="rgba(0,0,0,.3)"/><ellipse cx="76" cy="82" rx="9" ry="6" fill="#ffb3c8" stroke="rgba(0,0,0,.3)"/>
+  </svg>`;
+  const pick = a => a[Math.random() * a.length | 0];
+  const next = () => {
+    if (d.colors) {
+      const word = pick(d.colors);
+      const same = Math.random() < 0.45;
+      const paint = same ? word : pick(d.colors.filter(c => c !== word));
+      return { sign: word.name, color: paint.hex, target: same !== hitWrong };
+    }
+    const it = pick(d.items);
+    return { sign: it.text, color: it.color || '#8a6240', target: !!it.ok !== hitWrong };
+  };
+
+  let ok = 0, mistakes = 0, targets = 0, over = false, t0 = performance.now();
+  const holes = Array.from({ length: 9 }, () => {
+    const mole = el('div', { class: 'mole' });
+    const h = el('div', { class: 'hole' }, el('div', { class: 'mole-box' }, mole), el('div', { class: 'pit' }));
+    h.mole = mole;
+    mole.addEventListener('pointerdown', e => whack(h, e));
+    return h;
+  });
+
+  const whack = (h, e) => {
+    const m = h.cur;
+    if (!m || m.done || over) return;
+    m.done = true;
+    const hammer = el('div', { class: 'hammer', style: `left:${e.clientX}px;top:${e.clientY}px` }, '🔨');
+    document.body.append(hammer);
+    setTimeout(() => hammer.remove(), 300);
+    h.mole.classList.add('hit', m.target ? 'good' : 'oops');
+    if (m.target) { ok++; sfx.ok(); } else { mistakes++; sfx.bad(); flash(h, 'shake'); }
+    g.score(`✔ ${ok}  ✘ ${mistakes}`);
+    clearTimeout(h.timer);
+    h.timer = setTimeout(() => hide(h), 450);
+  };
+  const hide = h => {
+    h.mole.classList.remove('up');
+    setTimeout(() => { h.cur = null; h.mole.className = 'mole'; }, 200);
+  };
+  const spawn = () => {
+    if (over) return;
+    const p = Math.min((performance.now() - t0) / time, 1);
+    const free = holes.filter(h => !h.cur);
+    if (free.length) {
+      const h = pick(free);
+      const m = h.cur = next();
+      if (m.target) targets++;
+      h.mole.innerHTML = '';
+      h.mole.append(el('div', { class: 'sign' }, m.sign));
+      h.mole.insertAdjacentHTML('beforeend', moleSvg(m.color));
+      requestAnimationFrame(() => h.mole.classList.add('up'));
+      h.timer = setTimeout(() => hide(h), 2200 - 900 * p);
+    }
+    setTimeout(spawn, 1100 - 500 * p);
+  };
+
+  g.stopTimer();
+  const tick = setInterval(() => {
+    const left = Math.max(0, Math.ceil((time - (performance.now() - t0)) / 1000));
+    $('#timer').textContent = '⏳ ' + left;
+    g.progress(time - left * 1000, time);
+    if (left > 0) return;
+    clearInterval(tick);
+    over = true;
+    $('#timer').textContent = '';
+    holes.forEach(hide);
+    setTimeout(() => g.finish(Math.max(ok - mistakes, 0), Math.max(targets, ok), `ошибок: ${mistakes}`), 600);
+  }, 200);
+
+  g.score('✔ 0  ✘ 0');
+  stage.append(
+    d.rule ? el('div', { class: 'whack-rule' }, d.rule) : null,
+    el('div', { class: 'holes' }, holes));
+  setTimeout(spawn, 500);
+};
+
+// ---------- themes & stickers ----------
+const THEME_STICKERS = {
+  default: ['⭐', '✏️', '📚', '🎈', '🌟', '🧩'],
+  space: ['🚀', '🪐', '⭐', '🌙', '👾', '☄️', '🛸', '✨'],
+  forest: ['🌲', '🍄', '🦊', '🍃', '🐿️', '🌼', '🦔', '🍂'],
+  ocean: ['🐠', '🐙', '🐳', '🌊', '🐚', '🦀', '🫧', '🐬'],
+  candy: ['🍭', '🍬', '🧁', '🍩', '🎀', '💖', '🍓', '🌈'],
+  school: ['✏️', '📐', '📚', '🎒', '🖍️', '📏', '🔬', '🌍'],
+  winter: ['❄️', '⛄', '🎄', '🧣', '🎁', '⭐', '☃️', '🦌'],
+};
+
+// "theme": name, "stickers": [emoji or img:...] (or [] to turn them off)
+function decorate(d) {
+  if (d.theme) document.documentElement.dataset.theme = d.theme;
+  const list = d.stickers ?? THEME_STICKERS[d.theme] ?? THEME_STICKERS.default;
+  if (!list.length) return;
+  const box = el('div', { class: 'stickers' });
+  for (let k = 0; k < 14; k++) {
+    const s = list[k % list.length];
+    const size = 28 + Math.random() * 40;
+    box.append(el('span', {
+      style: `left:${(k % 7) * 14 + Math.random() * 8}%;top:${k < 7 ? 6 + Math.random() * 30 : 60 + Math.random() * 32}%;` +
+        `font-size:${size}px;width:${size}px;animation-delay:${-Math.random() * 6}s`,
+    }, content(s)));
+  }
+  document.body.prepend(box);
+}
+
+// ---------- boot ----------
+$('#mute').onclick = e => { muted = !muted; e.currentTarget.textContent = muted ? '🔇' : '🔊'; };
+$('#fs').onclick = () => {
+  try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch { }
+};
+
+// share pages under g/<slug>/ bake the slug into <html data-game>
+const slug = new URLSearchParams(location.search).get('g') || document.documentElement.dataset.game || '';
+// standalone files (canva/<slug>.html) carry the game inline
+const inline = document.getElementById('game-data');
+const load = () => inline
+  ? Promise.resolve(JSON.parse(inline.textContent))
+  : fetch(`games/${slug}.json`).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+if (!inline && !/^[\w-]+$/.test(slug)) {
+  $('#title').textContent = 'Игра не найдена';
+} else {
+  load()
+    .then(d => {
+      if (!GAMES[d.type]) throw new Error('unknown type ' + d.type);
+      data = d;
+      decorate(d);
+      document.title = d.title;
+      $('#title').textContent = d.title;
+      intro();
+    })
+    .catch(err => {
+      $('#title').textContent = 'Игра не найдена';
+      stage.replaceChildren(el('div', { class: 'card muted' }, 'Не удалось загрузить игру: ' + err.message));
+    });
+}
+
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@ For each game writes:
                           Iframely link, oEmbed discovery) so Canva/Iframely embed it as a live player
   g/<slug>/oembed.json  — oEmbed "rich" response with the iframe
   g/<slug>/cover.png    — preview picture (rendered from SVG with macOS qlmanage)
+  canva/<slug>.html     — one self-contained file (CSS, JS, data inline) to upload into Canva
 
 Run before every push:  python3 build.py
 """
@@ -114,6 +115,22 @@ def cover_png(game, out):
         shutil.move(os.path.join(tmp, 'cover.svg.png'), out)
 
 
+def standalone(game, out):
+    with open(os.path.join(ROOT, 'engine.css')) as f:
+        css = f.read()
+    with open(os.path.join(ROOT, 'engine.js')) as f:
+        js = f.read()
+    with open(os.path.join(ROOT, 'play.html')) as f:
+        page = f.read()
+    data = json.dumps(game, ensure_ascii=False).replace('</', '<\\/')
+    page = page.replace('<link rel="stylesheet" href="engine.css">', f'<style>\n{css}\n</style>')
+    page = page.replace('<title>Игра для урока</title>', f'<title>{html.escape(game["title"])}</title>')
+    page = page.replace('<script src="engine.js"></script>',
+                        f'<script type="application/json" id="game-data">{data}</script>\n<script>\n{js}\n</script>')
+    with open(out, 'w') as f:
+        f.write(page)
+
+
 def main():
     with open(os.path.join(ROOT, 'games', 'index.json')) as f:
         catalog = json.load(f)
@@ -142,6 +159,8 @@ def main():
                         f'allow="fullscreen; autoplay" allowfullscreen style="border:0;max-width:100%"></iframe>',
             }, f, ensure_ascii=False, indent=2)
         cover_png(game, os.path.join(d, 'cover.png'))
+        os.makedirs(os.path.join(ROOT, 'canva'), exist_ok=True)
+        standalone(game, os.path.join(ROOT, 'canva', slug + '.html'))
         print('ok', share)
 
 

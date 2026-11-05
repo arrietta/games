@@ -21,12 +21,17 @@
     fetch('games/index.json').then(r => r.json()).then(list => {
       const box = document.getElementById('list');
       for (const g of list) {
-        const a = document.createElement('a');
-        a.href = 'g/' + encodeURIComponent(g.slug) + '/';
-        a.innerHTML = '<div class="card"><div class="muted"></div><div class="big-q" style="font-size:22px"></div></div>';
-        a.querySelector('.muted').textContent = NAMES[g.type] || g.type;
-        a.querySelector('.big-q').textContent = g.title;
-        box.append(a);
+        const slug = encodeURIComponent(g.slug);
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = '<div class="muted"></div><a class="big-q" style="font-size:22px;display:block;margin:4px 0 12px"></a>' +
+          '<a class="muted" style="font-size:15px" download>⬇ Файл для Canva</a>';
+        card.querySelector('.muted').textContent = NAMES[g.type] || g.type;
+        const play = card.querySelector('a.big-q');
+        play.href = 'g/' + slug + '/';
+        play.textContent = g.title;
+        card.querySelector('a[download]').href = 'canva/' + slug + '.html';
+        box.append(card);
       }
     });
   </script>
