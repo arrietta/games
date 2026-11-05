@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "colors-whack",
+    "title": "Colours: Whack the Mole!",
+    "type": "whack"
+  },
+  {
+    "slug": "demo-quiz",
+    "title": "Столицы мира",
+    "type": "quiz"
+  },
+  {
+    "slug": "demo-truefalse",
+    "title": "Правда или ложь: животные",
+    "type": "truefalse"
+  },
+  {
+    "slug": "demo-match",
+    "title": "Animals: English — Русский",
+    "type": "match"
+  },
+  {
+    "slug": "demo-flashcards",
+    "title": "Таблица умножения на 7",
+    "type": "flashcards"
+  },
+  {
+    "slug": "demo-anagram",
+    "title": "Собери слово: фрукты (English)",
+    "type": "anagram"
+  },
+  {
+    "slug": "demo-sort",
+    "title": "Части речи",
+    "type": "groupsort"
+  },
+  {
+    "slug": "demo-wheel",
+    "title": "Вопрос для разминки",
+    "type": "wheel"
+  }
+]

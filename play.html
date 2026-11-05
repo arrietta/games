@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Игра для урока</title>
+  <link rel="stylesheet" href="engine.css">
+</head>
+<body>
+  <div id="app">
+    <header class="bar">
+      <h1 id="title">Загрузка…</h1>
+      <div class="stats">
+        <span class="pill" id="score"></span>
+        <span class="pill" id="timer"></span>
+        <button class="icon-btn" id="mute" title="Звук">🔊</button>
+        <button class="icon-btn" id="fs" title="Во весь экран">⛶</button>
+      </div>
+      <div class="progress" id="progress" style="width:0"></div>
+    </header>
+    <main id="stage"></main>
+  </div>
+  <script src="engine.js"></script>
+</body>
+</html>

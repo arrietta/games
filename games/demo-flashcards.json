@@ -1,0 +1,31 @@
+{
+  "type": "flashcards",
+  "title": "Таблица умножения на 7",
+  "theme": "winter",
+  "items": [
+    {
+      "front": "7 × 3",
+      "back": "21"
+    },
+    {
+      "front": "7 × 4",
+      "back": "28"
+    },
+    {
+      "front": "7 × 6",
+      "back": "42"
+    },
+    {
+      "front": "7 × 7",
+      "back": "49"
+    },
+    {
+      "front": "7 × 8",
+      "back": "56"
+    },
+    {
+      "front": "7 × 9",
+      "back": "63"
+    }
+  ]
+}

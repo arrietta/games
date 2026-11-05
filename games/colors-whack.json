@@ -1,0 +1,22 @@
+{
+  "type": "whack",
+  "title": "Colours: Whack the Mole!",
+  "theme": "forest",
+  "stickers": ["🎨", "🖍️", "🌈", "🔨", "🍄", "🌼"],
+  "instructions": "На табличке написан цвет по-английски. Бей крота 🔨, если он покрашен НЕ в этот цвет! Если цвет правильный — не трогай.",
+  "rule": "🔨 Бей, если цвет НЕ совпадает со словом!",
+  "time": 45,
+  "colors": [
+    { "name": "red", "hex": "#e53935" },
+    { "name": "blue", "hex": "#1e6fe0" },
+    { "name": "green", "hex": "#2fa84f" },
+    { "name": "yellow", "hex": "#ffd60a" },
+    { "name": "orange", "hex": "#ff8a1f" },
+    { "name": "purple", "hex": "#8e44c9" },
+    { "name": "pink", "hex": "#ff7eb9" },
+    { "name": "brown", "hex": "#8b5a2b" },
+    { "name": "black", "hex": "#2a2a2a" },
+    { "name": "white", "hex": "#ffffff" },
+    { "name": "grey", "hex": "#9aa0a6" }
+  ]
+}

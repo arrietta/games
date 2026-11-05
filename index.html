@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Игры для уроков</title>
+  <link rel="stylesheet" href="engine.css">
+</head>
+<body>
+  <div id="app">
+    <header class="bar"><h1>🎲 Игры для уроков</h1></header>
+    <main id="stage" style="justify-content:flex-start">
+      <div class="catalog" id="list"></div>
+    </main>
+  </div>
+  <script>
+    const NAMES = {
+      quiz: 'Викторина', truefalse: 'Правда или ложь', match: 'Найди пару', flashcards: 'Карточки',
+      anagram: 'Анаграмма', groupsort: 'Сортировка', wheel: 'Колесо фортуны', whack: 'Бей крота',
+    };
+    fetch('games/index.json').then(r => r.json()).then(list => {
+      const box = document.getElementById('list');
+      for (const g of list) {
+        const a = document.createElement('a');
+        a.href = 'play.html?g=' + encodeURIComponent(g.slug);
+        a.innerHTML = '<div class="card"><div class="muted"></div><div class="big-q" style="font-size:22px"></div></div>';
+        a.querySelector('.muted').textContent = NAMES[g.type] || g.type;
+        a.querySelector('.big-q').textContent = g.title;
+        box.append(a);
+      }
+    });
+  </script>
+</body>
+</html>

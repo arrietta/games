@@ -1,0 +1,27 @@
+{
+  "type": "anagram",
+  "title": "Собери слово: фрукты (English)",
+  "theme": "candy",
+  "items": [
+    {
+      "word": "apple",
+      "hint": "🍎"
+    },
+    {
+      "word": "banana",
+      "hint": "🍌"
+    },
+    {
+      "word": "lemon",
+      "hint": "🍋"
+    },
+    {
+      "word": "grapes",
+      "hint": "🍇"
+    },
+    {
+      "word": "cherry",
+      "hint": "🍒"
+    }
+  ]
+}
