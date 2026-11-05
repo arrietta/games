@@ -22,7 +22,7 @@
       const box = document.getElementById('list');
       for (const g of list) {
         const a = document.createElement('a');
-        a.href = 'play.html?g=' + encodeURIComponent(g.slug);
+        a.href = 'g/' + encodeURIComponent(g.slug) + '/';
         a.innerHTML = '<div class="card"><div class="muted"></div><div class="big-q" style="font-size:22px"></div></div>';
         a.querySelector('.muted').textContent = NAMES[g.type] || g.type;
         a.querySelector('.big-q').textContent = g.title;

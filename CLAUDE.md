@@ -14,8 +14,8 @@
 1. Создать `games/<slug>.json` (slug — латиница, цифры, `-`, напр. `5a-past-simple`).
 2. Добавить строку в `games/index.json`: `{ "slug", "title", "type" }`.
 3. Открыть `play.html?g=<slug>`, пройти игру, проверить что текст влезает.
-4. Опубликовать: `git add -A && git commit && git push` (gh лежит в `~/.local/bin/gh`, уже авторизован как `arrietta`).
-   GitHub Pages пересобирает сайт ~1 мин. Ссылка: `https://arrietta.github.io/games/play.html?g=<slug>`, каталог: `https://arrietta.github.io/games/`.
+4. `python3 build.py` — делает `g/<slug>/` (страница с метатегами плеера для Canva/Iframely, oembed.json, cover.png). Потом опубликовать: `git add -A && git commit && git push` (gh лежит в `~/.local/bin/gh`, уже авторизован как `arrietta`).
+   GitHub Pages пересобирает сайт ~1 мин. Ссылка для учителя (в т.ч. для Canva): `https://arrietta.github.io/games/g/<slug>/`, каталог: `https://arrietta.github.io/games/`.
 
 Репозиторий публичный (https://github.com/arrietta/games) — не класть туда личные данные учеников.
 

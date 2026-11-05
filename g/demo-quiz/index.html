@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru" data-game="demo-quiz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../../">
+  <title>Столицы мира</title>
+  <meta name="description" content="Викторина — интерактивная игра для урока">
+  <meta property="og:site_name" content="Игры для уроков">
+  <meta property="og:title" content="Столицы мира">
+  <meta property="og:description" content="Викторина — интерактивная игра для урока">
+  <meta property="og:type" content="video.other">
+  <meta property="og:url" content="https://arrietta.github.io/games/g/demo-quiz/">
+  <meta property="og:image" content="https://arrietta.github.io/games/g/demo-quiz/cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1200">
+  <meta property="og:video" content="https://arrietta.github.io/games/play.html?g=demo-quiz">
+  <meta property="og:video:url" content="https://arrietta.github.io/games/play.html?g=demo-quiz">
+  <meta property="og:video:secure_url" content="https://arrietta.github.io/games/play.html?g=demo-quiz">
+  <meta property="og:video:type" content="text/html">
+  <meta property="og:video:width" content="800">
+  <meta property="og:video:height" content="600">
+  <meta name="twitter:card" content="player">
+  <meta name="twitter:title" content="Столицы мира">
+  <meta name="twitter:description" content="Викторина — интерактивная игра для урока">
+  <meta name="twitter:image" content="https://arrietta.github.io/games/g/demo-quiz/cover.png">
+  <meta name="twitter:player" content="https://arrietta.github.io/games/play.html?g=demo-quiz">
+  <meta name="twitter:player:width" content="800">
+  <meta name="twitter:player:height" content="600">
+  <link rel="iframely player" href="https://arrietta.github.io/games/play.html?g=demo-quiz" media="(aspect-ratio: 800/600)">
+  <link rel="alternate" type="application/json+oembed" href="https://arrietta.github.io/games/g/demo-quiz/oembed.json" title="Столицы мира">
+  <link rel="canonical" href="https://arrietta.github.io/games/g/demo-quiz/">
+  <link rel="stylesheet" href="engine.css">
+</head>
+<body>
+  <div id="app">
+    <header class="bar">
+      <h1 id="title">Загрузка…</h1>
+      <div class="stats">
+        <span class="pill" id="score"></span>
+        <span class="pill" id="timer"></span>
+        <button class="icon-btn" id="mute" title="Звук">🔊</button>
+        <button class="icon-btn" id="fs" title="Во весь экран">⛶</button>
+      </div>
+      <div class="progress" id="progress" style="width:0"></div>
+    </header>
+    <main id="stage"></main>
+  </div>
+  <script src="engine.js"></script>
+</body>
+</html>

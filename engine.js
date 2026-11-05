@@ -610,7 +610,8 @@ $('#fs').onclick = () => {
   try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch { }
 };
 
-const slug = new URLSearchParams(location.search).get('g') || '';
+// share pages under g/<slug>/ bake the slug into <html data-game>
+const slug = new URLSearchParams(location.search).get('g') || document.documentElement.dataset.game || '';
 if (!/^[\w-]+$/.test(slug)) {
   $('#title').textContent = 'Игра не найдена';
 } else {

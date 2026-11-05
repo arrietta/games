@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "type": "rich",
+  "provider_name": "Игры для уроков",
+  "provider_url": "https://arrietta.github.io/games/",
+  "title": "Animals: English — Русский",
+  "width": 800,
+  "height": 600,
+  "thumbnail_url": "https://arrietta.github.io/games/g/demo-match/cover.png",
+  "thumbnail_width": 1200,
+  "thumbnail_height": 1200,
+  "html": "<iframe src=\"https://arrietta.github.io/games/play.html?g=demo-match\" width=\"800\" height=\"600\" frameborder=\"0\" allow=\"fullscreen; autoplay\" allowfullscreen style=\"border:0;max-width:100%\"></iframe>"
+}
