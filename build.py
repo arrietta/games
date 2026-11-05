@@ -7,6 +7,7 @@ For each game writes:
   g/<slug>/oembed.json  — oEmbed "rich" response with the iframe
   g/<slug>/cover.png    — preview picture (rendered from SVG with macOS qlmanage)
   canva/<slug>.html     — one self-contained file (CSS, JS, data inline) to upload into Canva
+  codepen/<slug>.html   — button that opens the game prefilled in CodePen (Canva plays CodePen links live)
 
 Run before every push:  python3 build.py
 """
@@ -131,6 +132,50 @@ def standalone(game, out):
         f.write(page)
 
 
+CODEPEN = '''<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title} — в CodePen</title>
+  <link rel="stylesheet" href="../engine.css">
+</head>
+<body>
+  <div id="app"><main id="stage">
+    <div class="card intro">
+      <div class="type">Перенос в CodePen</div>
+      <h2>{title}</h2>
+      <p class="muted">1. Войди в CodePen в этом браузере. 2. Нажми кнопку. 3. В CodePen нажми <b>Save</b> и скопируй ссылку из адресной строки — её и вставляй в Canva.</p>
+      <form action="https://codepen.io/pen/define" method="POST">
+        <input type="hidden" name="data" value="{data}">
+        <button class="btn" type="submit">Открыть в CodePen</button>
+      </form>
+    </div>
+  </main></div>
+</body>
+</html>
+'''
+
+
+def codepen(game, out):
+    with open(os.path.join(ROOT, 'engine.css')) as f:
+        css = f.read()
+    with open(os.path.join(ROOT, 'engine.js')) as f:
+        js = f.read()
+    with open(os.path.join(ROOT, 'play.html')) as f:
+        page = f.read()
+    body = page[page.index('<div id="app">'):page.index('<script src="engine.js">')].strip()
+    data = json.dumps(game, ensure_ascii=False).replace('</', '<\\/')
+    pen = {
+        'title': game['title'], 'description': 'Игра для урока', 'editors': '001', 'layout': 'left',
+        'html': body + f'\n<script type="application/json" id="game-data">{data}</script>',
+        'css': css, 'js': js,
+    }
+    with open(out, 'w') as f:
+        f.write(CODEPEN.format(title=html.escape(game['title']),
+                               data=html.escape(json.dumps(pen, ensure_ascii=False), quote=True)))
+
+
 def main():
     with open(os.path.join(ROOT, 'games', 'index.json')) as f:
         catalog = json.load(f)
@@ -161,6 +206,8 @@ def main():
         cover_png(game, os.path.join(d, 'cover.png'))
         os.makedirs(os.path.join(ROOT, 'canva'), exist_ok=True)
         standalone(game, os.path.join(ROOT, 'canva', slug + '.html'))
+        os.makedirs(os.path.join(ROOT, 'codepen'), exist_ok=True)
+        codepen(game, os.path.join(ROOT, 'codepen', slug + '.html'))
         print('ok', share)
 
 

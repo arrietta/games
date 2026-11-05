@@ -17,6 +17,8 @@
 4. `python3 build.py` — делает `g/<slug>/` (страница с метатегами плеера для Canva/Iframely, oembed.json, cover.png) и `canva/<slug>.html` — один самодостаточный файл: учитель загружает его в Canva (Загрузки → файл → Code design → «Использовать в дизайне»), т.к. Canva Embed для чужих сайтов показывает только ссылку. Картинки `img:` с относительным путём в этом файле не работают — для Canva-игр брать эмодзи или полные https-ссылки. Потом опубликовать: `git add -A && git commit && git push` (gh лежит в `~/.local/bin/gh`, уже авторизован как `arrietta`).
    GitHub Pages пересобирает сайт ~1 мин. Ссылка для учителя (в т.ч. для Canva): `https://arrietta.github.io/games/g/<slug>/`, каталог: `https://arrietta.github.io/games/`.
 
+Canva → Embed играет вживую только ссылки известных Iframely провайдеров; github.io там нет (и Iframely не одобряет разовые сайты). Из проверенных живым считается CodePen (JSFiddle и itch.io — нет). Поэтому `build.py` делает `codepen/<slug>.html`: кнопка шлёт игру в CodePen (prefill API), учитель жмёт Save в своём аккаунте и вставляет ссылку на pen в Canva.
+
 Репозиторий публичный (https://github.com/arrietta/games) — не класть туда личные данные учеников.
 
 ## Форматы
